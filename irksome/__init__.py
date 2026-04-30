@@ -1,51 +1,73 @@
-from .tableaux.ButcherTableaux import (
-    Alexander,
-    BackwardEuler,
-    GaussLegendre,
-    LobattoIIIA,
-    LobattoIIIC,
-    PareschiRusso,
-    QinZhang,
-    RadauIIA,
+from .bseries import (
+    RootedTree,
+    all_trees,
+    elementary_weight,
+    elementary_weights,
+    check_order_conditions,
+    order_violations,
 )
-from .tableaux.pep_explicit_rk import PEPRK
-from .ufl.deriv import Dt, expand_time_derivatives, check_irksome_import_order
-
-check_irksome_import_order()
-
-from .tableaux.dirk_imex_tableaux import DIRK_IMEX
-from .tableaux.ars_dirk_imex_tableaux import ARS_DIRK_IMEX
-from .tableaux.sspk_tableau import SSPK_DIRK_IMEX, SSPButcherTableau
-
-from .constant import MeshConstant
-from .tableaux.wso_dirk_tableaux import WSODIRK
-from .scheme import create_time_quadrature
-from .scheme import ContinuousPetrovGalerkinScheme, DiscontinuousGalerkinScheme
-from .scheme import GalerkinCollocationScheme
 
 __all__ = [
-    "Alexander",
-    "ARS_DIRK_IMEX",
-    "BackwardEuler",
-    "ContinuousPetrovGalerkinScheme",
-    "create_time_quadrature",
-    "DIRK_IMEX",
-    "DiscontinuousGalerkinScheme",
-    "Dt",
-    "expand_time_derivatives",
-    "GalerkinCollocationScheme",
-    "GaussLegendre",
-    "LobattoIIIA",
-    "LobattoIIIC",
-    "MeshConstant",
-    "PareschiRusso",
-    "PEPRK",
-    "QinZhang",
-    "RadauIIA",
-    "SSPButcherTableau",
-    "SSPK_DIRK_IMEX",
-    "WSODIRK",
+    "RootedTree",
+    "all_trees",
+    "check_order_conditions",
+    "elementary_weight",
+    "elementary_weights",
+    "order_violations",
 ]
+
+try:
+    from .tableaux.ButcherTableaux import (
+        Alexander,
+        BackwardEuler,
+        GaussLegendre,
+        LobattoIIIA,
+        LobattoIIIC,
+        PareschiRusso,
+        QinZhang,
+        RadauIIA,
+    )
+    from .tableaux.pep_explicit_rk import PEPRK
+    from .ufl.deriv import Dt, expand_time_derivatives, check_irksome_import_order
+
+    check_irksome_import_order()
+
+    from .tableaux.dirk_imex_tableaux import DIRK_IMEX
+    from .tableaux.ars_dirk_imex_tableaux import ARS_DIRK_IMEX
+    from .tableaux.sspk_tableau import SSPK_DIRK_IMEX, SSPButcherTableau
+
+    from .constant import MeshConstant
+    from .tableaux.wso_dirk_tableaux import WSODIRK
+    from .scheme import create_time_quadrature
+    from .scheme import ContinuousPetrovGalerkinScheme, DiscontinuousGalerkinScheme
+    from .scheme import GalerkinCollocationScheme
+
+    __all__ += [
+        "Alexander",
+        "ARS_DIRK_IMEX",
+        "BackwardEuler",
+        "ContinuousPetrovGalerkinScheme",
+        "create_time_quadrature",
+        "DIRK_IMEX",
+        "DiscontinuousGalerkinScheme",
+        "Dt",
+        "expand_time_derivatives",
+        "GalerkinCollocationScheme",
+        "GaussLegendre",
+        "LobattoIIIA",
+        "LobattoIIIC",
+        "MeshConstant",
+        "PareschiRusso",
+        "PEPRK",
+        "QinZhang",
+        "RadauIIA",
+        "SSPButcherTableau",
+        "SSPK_DIRK_IMEX",
+        "WSODIRK",
+    ]
+
+except ModuleNotFoundError:
+    pass
 
 
 try:
