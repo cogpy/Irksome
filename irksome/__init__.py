@@ -67,6 +67,8 @@ try:
     ]
 
 except ModuleNotFoundError:
+    # FIAT (and dependent tableaux/scheme modules) are not available in this
+    # environment.  The bseries module above remains fully functional.
     pass
 
 
