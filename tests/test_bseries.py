@@ -45,6 +45,89 @@ t4b = RootedTree([t3b])           # [[τ, τ]], order 4
 t4c = RootedTree([t2, tau])       # [[τ], τ], order 4
 t4d = RootedTree([tau, tau, tau]) # [τ, τ, τ], order 4
 
+# Order 5: 9 trees (descending all_trees() sort order within each order, matching orders 3–4 above)
+t5a = RootedTree([t4a])                    # [[[[τ]]]], order 5
+t5b = RootedTree([t4b])                    # [[[τ, τ]]], order 5
+t5c = RootedTree([t4c])                    # [[[τ], τ]], order 5
+t5d = RootedTree([t4d])                    # [[τ, τ, τ]], order 5
+t5e = RootedTree([t2, t2])                 # [[τ], [τ]], order 5
+t5f = RootedTree([tau, t3a])               # [τ, [[τ]]], order 5
+t5g = RootedTree([tau, t3b])               # [τ, [τ, τ]], order 5
+t5h = RootedTree([tau, tau, t2])           # [τ, τ, [τ]], order 5
+t5i = RootedTree([tau, tau, tau, tau])     # [τ, τ, τ, τ], order 5
+
+# Order 6: 20 trees
+t6a = RootedTree([t5a])                          # [[[[[τ]]]]], order 6
+t6b = RootedTree([t5b])                          # [[[[τ, τ]]]], order 6
+t6c = RootedTree([t5c])                          # [[[[τ], τ]]], order 6
+t6d = RootedTree([t5d])                          # [[[τ, τ, τ]]], order 6
+t6e = RootedTree([t5e])                          # [[[τ], [τ]]], order 6
+t6f = RootedTree([t5f])                          # [[τ, [[τ]]]], order 6
+t6g = RootedTree([t5g])                          # [[τ, [τ, τ]]], order 6
+t6h = RootedTree([t5h])                          # [[τ, τ, [τ]]], order 6
+t6i = RootedTree([t5i])                          # [[τ, τ, τ, τ]], order 6
+t6j = RootedTree([t2, t3a])                      # [[τ], [[τ]]], order 6
+t6k = RootedTree([t2, t3b])                      # [[τ], [τ, τ]], order 6
+t6l = RootedTree([tau, t4a])                     # [τ, [[[τ]]]], order 6
+t6m = RootedTree([tau, t4b])                     # [τ, [[τ, τ]]], order 6
+t6n = RootedTree([tau, t4c])                     # [τ, [[τ], τ]], order 6
+t6o = RootedTree([tau, t4d])                     # [τ, [τ, τ, τ]], order 6
+t6p = RootedTree([tau, t2, t2])                  # [τ, [τ], [τ]], order 6
+t6q = RootedTree([tau, tau, t3a])                # [τ, τ, [[τ]]], order 6
+t6r = RootedTree([tau, tau, t3b])                # [τ, τ, [τ, τ]], order 6
+t6s = RootedTree([tau, tau, tau, t2])            # [τ, τ, τ, [τ]], order 6
+t6t = RootedTree([tau, tau, tau, tau, tau])      # [τ, τ, τ, τ, τ], order 6
+
+# Order 7: 48 trees
+t7a  = RootedTree([t6a])                               # [[[[[[τ]]]]]], order 7
+t7b  = RootedTree([t6b])                               # [[[[[τ, τ]]]]], order 7
+t7c  = RootedTree([t6c])                               # [[[[[τ], τ]]]], order 7
+t7d  = RootedTree([t6d])                               # [[[[τ, τ, τ]]]], order 7
+t7e  = RootedTree([t6e])                               # [[[[τ], [τ]]]], order 7
+t7f  = RootedTree([t6f])                               # [[[τ, [[τ]]]]], order 7
+t7g  = RootedTree([t6g])                               # [[[τ, [τ, τ]]]], order 7
+t7h  = RootedTree([t6h])                               # [[[τ, τ, [τ]]]], order 7
+t7i  = RootedTree([t6i])                               # [[[τ, τ, τ, τ]]], order 7
+t7j  = RootedTree([t6j])                               # [[[τ], [[τ]]]], order 7
+t7k  = RootedTree([t6k])                               # [[[τ], [τ, τ]]], order 7
+t7l  = RootedTree([t6l])                               # [[τ, [[[τ]]]]], order 7
+t7m  = RootedTree([t6m])                               # [[τ, [[τ, τ]]]], order 7
+t7n  = RootedTree([t6n])                               # [[τ, [[τ], τ]]], order 7
+t7o  = RootedTree([t6o])                               # [[τ, [τ, τ, τ]]], order 7
+t7p  = RootedTree([t6p])                               # [[τ, [τ], [τ]]], order 7
+t7q  = RootedTree([t6q])                               # [[τ, τ, [[τ]]]], order 7
+t7r  = RootedTree([t6r])                               # [[τ, τ, [τ, τ]]], order 7
+t7s  = RootedTree([t6s])                               # [[τ, τ, τ, [τ]]], order 7
+t7t  = RootedTree([t6t])                               # [[τ, τ, τ, τ, τ]], order 7
+t7u  = RootedTree([t3a, t3a])                          # [[[τ]], [[τ]]], order 7
+t7v  = RootedTree([t3b, t3a])                          # [[τ, τ], [[τ]]], order 7
+t7w  = RootedTree([t3b, t3b])                          # [[τ, τ], [τ, τ]], order 7
+t7x  = RootedTree([t2, t4a])                           # [[τ], [[[τ]]]], order 7
+t7y  = RootedTree([t2, t4b])                           # [[τ], [[τ, τ]]], order 7
+t7z  = RootedTree([t2, t4c])                           # [[τ], [[τ], τ]], order 7
+t7aa = RootedTree([t2, t4d])                           # [[τ], [τ, τ, τ]], order 7
+t7ab = RootedTree([t2, t2, t2])                        # [[τ], [τ], [τ]], order 7
+t7ac = RootedTree([tau, t5a])                          # [τ, [[[[τ]]]]], order 7
+t7ad = RootedTree([tau, t5b])                          # [τ, [[[τ, τ]]]], order 7
+t7ae = RootedTree([tau, t5c])                          # [τ, [[[τ], τ]]], order 7
+t7af = RootedTree([tau, t5d])                          # [τ, [[τ, τ, τ]]], order 7
+t7ag = RootedTree([tau, t5e])                          # [τ, [[τ], [τ]]], order 7
+t7ah = RootedTree([tau, t5f])                          # [τ, [τ, [[τ]]]], order 7
+t7ai = RootedTree([tau, t5g])                          # [τ, [τ, [τ, τ]]], order 7
+t7aj = RootedTree([tau, t5h])                          # [τ, [τ, τ, [τ]]], order 7
+t7ak = RootedTree([tau, t5i])                          # [τ, [τ, τ, τ, τ]], order 7
+t7al = RootedTree([tau, t2, t3a])                      # [τ, [τ], [[τ]]], order 7
+t7am = RootedTree([tau, t2, t3b])                      # [τ, [τ], [τ, τ]], order 7
+t7an = RootedTree([tau, tau, t4a])                     # [τ, τ, [[[τ]]]], order 7
+t7ao = RootedTree([tau, tau, t4b])                     # [τ, τ, [[τ, τ]]], order 7
+t7ap = RootedTree([tau, tau, t4c])                     # [τ, τ, [[τ], τ]], order 7
+t7aq = RootedTree([tau, tau, t4d])                     # [τ, τ, [τ, τ, τ]], order 7
+t7ar = RootedTree([tau, tau, t2, t2])                  # [τ, τ, [τ], [τ]], order 7
+t7as = RootedTree([tau, tau, tau, t3a])                # [τ, τ, τ, [[τ]]], order 7
+t7at = RootedTree([tau, tau, tau, t3b])                # [τ, τ, τ, [τ, τ]], order 7
+t7au = RootedTree([tau, tau, tau, tau, t2])            # [τ, τ, τ, τ, [τ]], order 7
+t7av = RootedTree([tau, tau, tau, tau, tau, tau])      # [τ, τ, τ, τ, τ, τ], order 7
+
 # ---------------------------------------------------------------------------
 # Helper tableaux (defined without FIAT/Firedrake)
 # ---------------------------------------------------------------------------
@@ -108,6 +191,17 @@ class TestRootedTreeProperties:
         assert t4b.order == 4
         assert t4c.order == 4
         assert t4d.order == 4
+        for t in [t5a, t5b, t5c, t5d, t5e, t5f, t5g, t5h, t5i]:
+            assert t.order == 5
+        for t in [t6a, t6b, t6c, t6d, t6e, t6f, t6g, t6h, t6i, t6j,
+                  t6k, t6l, t6m, t6n, t6o, t6p, t6q, t6r, t6s, t6t]:
+            assert t.order == 6
+        for t in [t7a, t7b, t7c, t7d, t7e, t7f, t7g, t7h, t7i, t7j,
+                  t7k, t7l, t7m, t7n, t7o, t7p, t7q, t7r, t7s, t7t,
+                  t7u, t7v, t7w, t7x, t7y, t7z, t7aa, t7ab, t7ac, t7ad,
+                  t7ae, t7af, t7ag, t7ah, t7ai, t7aj, t7ak, t7al, t7am,
+                  t7an, t7ao, t7ap, t7aq, t7ar, t7as, t7at, t7au, t7av]:
+            assert t.order == 7
 
     def test_symmetry(self):
         assert tau.symmetry == 1
@@ -118,6 +212,16 @@ class TestRootedTreeProperties:
         assert t4b.symmetry == 2     # one child [τ,τ] with σ=2 → 1! * 2^1 = 2
         assert t4c.symmetry == 1     # children [τ] and τ are distinct
         assert t4d.symmetry == 6     # three identical children τ → 3!
+        # order 5
+        assert t5a.symmetry == 1
+        assert t5b.symmetry == 2     # child [τ,τ] has σ=2
+        assert t5c.symmetry == 1
+        assert t5d.symmetry == 6     # child [τ,τ,τ] has σ=6
+        assert t5e.symmetry == 2     # two identical children [τ] → 2!
+        assert t5f.symmetry == 1
+        assert t5g.symmetry == 2     # child [τ,τ] has σ=2
+        assert t5h.symmetry == 2     # two identical children τ → 2!
+        assert t5i.symmetry == 24    # four identical children τ → 4!
 
     def test_density(self):
         assert tau.density == 1
@@ -128,6 +232,16 @@ class TestRootedTreeProperties:
         assert t4b.density == 12     # 4 * 3
         assert t4c.density == 8      # 4 * 2 * 1
         assert t4d.density == 4      # 4 * 1 * 1 * 1
+        # order 5
+        assert t5a.density == 120    # 5 * 24
+        assert t5b.density == 60     # 5 * 12
+        assert t5c.density == 40     # 5 * 8
+        assert t5d.density == 20     # 5 * 4
+        assert t5e.density == 20     # 5 * 2 * 2
+        assert t5f.density == 30     # 5 * 6
+        assert t5g.density == 15     # 5 * 3
+        assert t5h.density == 10     # 5 * 2
+        assert t5i.density == 5      # 5 * 1 * 1 * 1 * 1
 
     def test_tree_factorial(self):
         # t! = σ(t) * γ(t)
@@ -139,6 +253,16 @@ class TestRootedTreeProperties:
         assert t4b.tree_factorial == 24  # σ=2, γ=12
         assert t4c.tree_factorial == 8
         assert t4d.tree_factorial == 24  # σ=6, γ=4
+        # order 5
+        assert t5a.tree_factorial == 120  # σ=1, γ=120
+        assert t5b.tree_factorial == 120  # σ=2, γ=60
+        assert t5c.tree_factorial == 40   # σ=1, γ=40
+        assert t5d.tree_factorial == 120  # σ=6, γ=20
+        assert t5e.tree_factorial == 40   # σ=2, γ=20
+        assert t5f.tree_factorial == 30   # σ=1, γ=30
+        assert t5g.tree_factorial == 30   # σ=2, γ=15
+        assert t5h.tree_factorial == 20   # σ=2, γ=10
+        assert t5i.tree_factorial == 120  # σ=24, γ=5
 
     def test_equality(self):
         assert tau == RootedTree()
@@ -152,10 +276,11 @@ class TestRootedTreeProperties:
         assert RootedTree([t2, tau]) == RootedTree([tau, t2])
 
     def test_hash_consistency(self):
-        s = {tau, t2, t3a, t3b, t4a, t4b, t4c, t4d}
-        assert len(s) == 8
+        s = {tau, t2, t3a, t3b, t4a, t4b, t4c, t4d,
+             t5a, t5b, t5c, t5d, t5e, t5f, t5g, t5h, t5i}
+        assert len(s) == 17
         assert tau in s
-        assert t4c in s
+        assert t5i in s
 
     def test_repr(self):
         assert repr(tau) == "τ"
@@ -173,33 +298,119 @@ class TestRootedTreeProperties:
         assert set(ordered[2:4]) == {t3a, t3b}
         assert set(ordered[4:]) == {t4a, t4b, t4c, t4d}
 
+        # Order-5 trees must all sort after order-4 trees.
+        order5 = [t5a, t5b, t5c, t5d, t5e, t5f, t5g, t5h, t5i]
+        mixed = sorted(trees + order5)
+        assert mixed[0] == tau
+        assert set(mixed[8:]) == set(order5)
+
 
 # ===========================================================================
 # Tree enumeration tests
 # ===========================================================================
 
 class TestAllTrees:
-    # Number of rooted trees by order: 1, 1, 2, 4, 9, 20, …
-    @pytest.mark.parametrize("n,count", [(1, 1), (2, 1), (3, 2), (4, 4), (5, 9)])
+    # Number of rooted trees by order (orders 1–7): 1, 1, 2, 4, 9, 20, 48
+    @pytest.mark.parametrize("n,count", [(1, 1), (2, 1), (3, 2), (4, 4), (5, 9), (6, 20), (7, 48)])
     def test_trees_at_each_order(self, n, count):
         trees_at_n = [t for t in all_trees(n) if t.order == n]
         assert len(trees_at_n) == count
 
-    @pytest.mark.parametrize("n,total", [(1, 1), (2, 2), (3, 4), (4, 8), (5, 17)])
+    @pytest.mark.parametrize("n,total", [(1, 1), (2, 2), (3, 4), (4, 8), (5, 17), (6, 37), (7, 85)])
     def test_cumulative_count(self, n, total):
         assert len(all_trees(n)) == total
 
     def test_known_trees_present(self):
-        trees = set(all_trees(4))
+        trees4 = set(all_trees(4))
         for t in [tau, t2, t3a, t3b, t4a, t4b, t4c, t4d]:
-            assert t in trees
+            assert t in trees4
+        trees5 = set(all_trees(5))
+        for t in [t5a, t5b, t5c, t5d, t5e, t5f, t5g, t5h, t5i]:
+            assert t in trees5
 
     def test_order_bounds(self):
-        for t in all_trees(5):
-            assert 1 <= t.order <= 5
+        for t in all_trees(7):
+            assert 1 <= t.order <= 7
 
     def test_empty_returns_empty(self):
         assert all_trees(0) == []
+
+
+# ===========================================================================
+# Higher-order canonical tree property tests (orders 6 and 7)
+# ===========================================================================
+
+# (sigma, gamma) = (symmetry coefficient, density) pairs for order-6 trees a..t
+_ORDER6_SIGMA_GAMMA = [
+    (1, 720), (2, 360), (1, 240), (6, 120), (2, 120),
+    (1, 180), (2, 90),  (2, 60),  (24, 30), (1, 72),
+    (2, 36),  (1, 144), (2, 72),  (1, 48),  (6, 24),
+    (2, 24),  (2, 36),  (4, 18),  (6, 12),  (120, 6),
+]
+_ORDER6_TREES = [
+    t6a, t6b, t6c, t6d, t6e, t6f, t6g, t6h, t6i, t6j,
+    t6k, t6l, t6m, t6n, t6o, t6p, t6q, t6r, t6s, t6t,
+]
+
+# (sigma, gamma) = (symmetry coefficient, density) pairs for order-7 trees a..av
+_ORDER7_SIGMA_GAMMA = [
+    (1, 5040), (2, 2520), (1, 1680), (6, 840),  (2, 840),
+    (1, 1260), (2, 630),  (2, 420),  (24, 210), (1, 504),
+    (2, 252),  (1, 1008), (2, 504),  (1, 336),  (6, 168),
+    (2, 168),  (2, 252),  (4, 126),  (6, 84),   (120, 42),
+    (2, 252),  (2, 126),  (8, 63),   (1, 336),  (2, 168),
+    (1, 112),  (6, 56),   (6, 56),   (1, 840),  (2, 420),
+    (1, 280),  (6, 140),  (2, 140),  (1, 210),  (2, 105),
+    (2, 70),   (24, 35),  (1, 84),   (2, 42),   (2, 168),
+    (4, 84),   (2, 56),   (12, 28),  (4, 28),   (6, 42),
+    (12, 21),  (24, 14),  (720, 7),
+]
+_ORDER7_TREES = [
+    t7a, t7b, t7c, t7d, t7e, t7f, t7g, t7h, t7i, t7j,
+    t7k, t7l, t7m, t7n, t7o, t7p, t7q, t7r, t7s, t7t,
+    t7u, t7v, t7w, t7x, t7y, t7z, t7aa, t7ab, t7ac, t7ad,
+    t7ae, t7af, t7ag, t7ah, t7ai, t7aj, t7ak, t7al, t7am,
+    t7an, t7ao, t7ap, t7aq, t7ar, t7as, t7at, t7au, t7av,
+]
+
+
+class TestHigherOrderTreeProperties:
+
+    @pytest.mark.parametrize("t,sigma,gamma", [
+        (tree, sg[0], sg[1])
+        for tree, sg in zip(_ORDER6_TREES, _ORDER6_SIGMA_GAMMA)
+    ])
+    def test_order6_properties(self, t, sigma, gamma):
+        assert t.order == 6
+        assert t.symmetry == sigma
+        assert t.density == gamma
+        assert t.tree_factorial == sigma * gamma
+
+    @pytest.mark.parametrize("t,sigma,gamma", [
+        (tree, sg[0], sg[1])
+        for tree, sg in zip(_ORDER7_TREES, _ORDER7_SIGMA_GAMMA)
+    ])
+    def test_order7_properties(self, t, sigma, gamma):
+        assert t.order == 7
+        assert t.symmetry == sigma
+        assert t.density == gamma
+        assert t.tree_factorial == sigma * gamma
+
+    def test_order6_all_distinct(self):
+        assert len(set(_ORDER6_TREES)) == 20
+
+    def test_order7_all_distinct(self):
+        assert len(set(_ORDER7_TREES)) == 48
+
+    def test_order6_in_all_trees(self):
+        trees6 = set(all_trees(6))
+        for t in _ORDER6_TREES:
+            assert t in trees6
+
+    def test_order7_in_all_trees(self):
+        trees7 = set(all_trees(7))
+        for t in _ORDER7_TREES:
+            assert t in trees7
 
 
 # ===========================================================================
