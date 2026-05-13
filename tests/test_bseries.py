@@ -481,9 +481,19 @@ class TestHigherOrderTreeProperties:
 class TestElementaryWeight:
 
     # --- consistency (order-1) condition holds for every method ---
-    @pytest.mark.parametrize("bt", [_euler(), _midpoint(), _rk4(), _rk5(),
-                                     _rk6(), _rk7(), _implicit_midpoint(),
-                                     _radau_iia_2()])
+    @pytest.mark.parametrize(
+        "bt",
+        [
+            _euler(),
+            _midpoint(),
+            _rk4(),
+            _rk5(),
+            _rk6(),
+            _rk7(),
+            _implicit_midpoint(),
+            _radau_iia_2(),
+        ],
+    )
     def test_order1_always_one(self, bt):
         assert allclose(elementary_weight(bt, tau), 1.0)
 
