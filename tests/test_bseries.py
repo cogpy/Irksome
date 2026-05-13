@@ -133,6 +133,52 @@ t7av = RootedTree([tau, tau, tau, tau, tau, tau])      # [τ, τ, τ, τ, τ, τ
 # ---------------------------------------------------------------------------
 
 
+def _lagrange_basis(nodes, i):
+    """Return the i-th Lagrange basis polynomial for *nodes*."""
+    poly = np.poly1d([1.0])
+    denom = 1.0
+    for j, node in enumerate(nodes):
+        if j == i:
+            continue
+        poly *= np.poly1d([1.0, -node])
+        denom *= nodes[i] - node
+    return poly / denom
+
+
+def _collocation(nodes):
+    """Build a collocation tableau from nodes on [0, 1]."""
+    nodes = np.asarray(nodes, dtype=float)
+    num_stages = len(nodes)
+    A = np.zeros((num_stages, num_stages), dtype=float)
+    b = np.zeros(num_stages, dtype=float)
+
+    for i in range(num_stages):
+        basis = _lagrange_basis(nodes, i)
+        antiderivative = basis.integ()
+        A[:, i] = antiderivative(nodes) - antiderivative(0.0)
+        b[i] = antiderivative(1.0) - antiderivative(0.0)
+
+    return _BT(A, b, nodes)
+
+
+def _gauss_legendre(num_stages):
+    """Gauss-Legendre collocation rule on [0, 1]."""
+    nodes, _ = np.polynomial.legendre.leggauss(num_stages)
+    return _collocation(0.5 * (nodes + 1.0))
+
+
+def _radau_iia(num_stages):
+    """Radau IIA collocation rule on [0, 1]."""
+    if num_stages == 1:
+        return _collocation([1.0])
+    poly = (
+        np.polynomial.legendre.Legendre.basis(num_stages - 1)
+        - np.polynomial.legendre.Legendre.basis(num_stages)
+    )
+    nodes = np.sort(np.real_if_close(poly.roots()))
+    return _collocation(0.5 * (nodes + 1.0))
+
+
 def _euler():
     """Forward/Backward Euler (1 stage, order 1)."""
     A = np.array([[0.0]])
@@ -158,6 +204,21 @@ def _rk4():
     b = np.array([1/6, 1/3, 1/3, 1/6])
     c = np.array([0, 0.5, 0.5, 1.0])
     return _BT(A, b, c)
+
+
+def _rk5():
+    """3-stage Radau IIA rule (order 5)."""
+    return _radau_iia(3)
+
+
+def _rk6():
+    """3-stage Gauss-Legendre rule (order 6)."""
+    return _gauss_legendre(3)
+
+
+def _rk7():
+    """4-stage Radau IIA rule (order 7)."""
+    return _radau_iia(4)
 
 
 def _implicit_midpoint():
@@ -420,8 +481,9 @@ class TestHigherOrderTreeProperties:
 class TestElementaryWeight:
 
     # --- consistency (order-1) condition holds for every method ---
-    @pytest.mark.parametrize("bt", [_euler(), _midpoint(), _rk4(),
-                                     _implicit_midpoint(), _radau_iia_2()])
+    @pytest.mark.parametrize("bt", [_euler(), _midpoint(), _rk4(), _rk5(),
+                                     _rk6(), _rk7(), _implicit_midpoint(),
+                                     _radau_iia_2()])
     def test_order1_always_one(self, bt):
         assert allclose(elementary_weight(bt, tau), 1.0)
 
@@ -534,6 +596,30 @@ class TestCheckOrderConditions:
     def test_rk4_fails_order5(self):
         assert not check_order_conditions(_rk4(), 5)
 
+    # 3-stage Radau IIA passes orders 1-5, fails 6
+    @pytest.mark.parametrize("p", [1, 2, 3, 4, 5])
+    def test_rk5_satisfies(self, p):
+        assert check_order_conditions(_rk5(), p)
+
+    def test_rk5_fails_order6(self):
+        assert not check_order_conditions(_rk5(), 6)
+
+    # 3-stage Gauss-Legendre passes orders 1-6, fails 7
+    @pytest.mark.parametrize("p", [1, 2, 3, 4, 5, 6])
+    def test_rk6_satisfies(self, p):
+        assert check_order_conditions(_rk6(), p)
+
+    def test_rk6_fails_order7(self):
+        assert not check_order_conditions(_rk6(), 7)
+
+    # 4-stage Radau IIA passes orders 1-7, fails 8
+    @pytest.mark.parametrize("p", [1, 2, 3, 4, 5, 6, 7])
+    def test_rk7_satisfies(self, p):
+        assert check_order_conditions(_rk7(), p)
+
+    def test_rk7_fails_order8(self):
+        assert not check_order_conditions(_rk7(), 8)
+
     # RadauIIA(2) passes 1-3, fails 4
     @pytest.mark.parametrize("p", [1, 2, 3])
     def test_radau2_satisfies(self, p):
@@ -554,6 +640,24 @@ class TestOrderViolations:
 
     def test_rk4_has_violations_at_order5(self):
         assert len(order_violations(_rk4(), 5)) > 0
+
+    def test_rk5_no_violations_up_to_order5(self):
+        assert len(order_violations(_rk5(), 5)) == 0
+
+    def test_rk5_has_violations_at_order6(self):
+        assert len(order_violations(_rk5(), 6)) > 0
+
+    def test_rk6_no_violations_up_to_order6(self):
+        assert len(order_violations(_rk6(), 6)) == 0
+
+    def test_rk6_has_violations_at_order7(self):
+        assert len(order_violations(_rk6(), 7)) > 0
+
+    def test_rk7_no_violations_up_to_order7(self):
+        assert len(order_violations(_rk7(), 7)) == 0
+
+    def test_rk7_has_violations_at_order8(self):
+        assert len(order_violations(_rk7(), 8)) > 0
 
     def test_midpoint_no_violations_order2(self):
         assert len(order_violations(_midpoint(), 2)) == 0
