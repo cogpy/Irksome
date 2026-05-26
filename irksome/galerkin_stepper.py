@@ -341,6 +341,9 @@ class ContinuousPetrovGalerkinTimeStepper(StageCoupledTimeStepper):
             def scaledIA(A):
                 # For stage-value the splitting exposes row scaling
                 A1, A2 = IA(A)
+                # IA returns A2 = A (same object), so copy to avoid
+                # mutating the Butcher tableau in place on each call.
+                A2 = A2.copy()
                 np.multiply(A1, row_scale, out=A1)
                 np.multiply(1/row_scale, A2, out=A2)
                 return A1, A2

@@ -480,8 +480,6 @@ class TestHigherOrderTreeProperties:
 class TestElementaryWeight:
 
     # --- consistency (order-1) condition holds for every method ---
-    @pytest.mark.parametrize("bt", [_euler(), _midpoint(), _rk4(),
-                                    _implicit_midpoint(), _radau_iia_2()])
     @pytest.mark.parametrize(
         "bt",
         [
