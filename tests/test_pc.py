@@ -177,6 +177,8 @@ def test_git_irk_equivalence(quad_scheme, order, stage_type):
 
     bcs = [DirichletBC(Z.sub(0), uexact, "on_boundary")]
     nsp = MixedVectorSpaceBasis(Z, [Z.sub(0), VectorSpaceBasis(constant=True, comm=msh.comm)])
+    pconst = Function(Q).interpolate(Constant(1))
+    inv_vol = 1 / assemble(pconst * dx)
 
     u, p = z.subfunctions
     u.interpolate(uexact)
@@ -197,13 +199,19 @@ def test_git_irk_equivalence(quad_scheme, order, stage_type):
         }
     }
     scheme = GalerkinCollocationScheme(order, quadrature_scheme=quad_scheme, stage_type=stage_type)
+    kwargs = {}
+    if isinstance(scheme, ContinuousPetrovGalerkinScheme):
+        kwargs["aux_indices"] = [1]
     stepper = TimeStepper(F, scheme, t, dt, z,
                           bcs=bcs, solver_parameters=sparams,
                           nullspace=nsp,
-                          aux_indices=[1])
+                          pre_apply_bcs=False,
+                          **kwargs)
 
     for step in range(N):
         stepper.advance()
+        pavg = inv_vol * assemble(p * dx)
+        p.assign(p - pavg * pconst)
         assert numpy.allclose(stepper.solver.snes.ksp.computeEigenvalues(), 1.0)
         t.assign(float(t) + float(dt))
 
