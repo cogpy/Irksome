@@ -344,8 +344,10 @@ class ContinuousPetrovGalerkinTimeStepper(StageCoupledTimeStepper):
                 # IA returns A2 = A (same object), so copy to avoid
                 # mutating the Butcher tableau in place on each call.
                 A2 = A2.copy()
-                np.multiply(A1, row_scale, out=A1)
-                np.multiply(1/row_scale, A2, out=A2)
+                # Use [:, None] to broadcast row_scale as a column vector,
+                # ensuring row-wise (not column-wise) scaling so A1 @ A2 == A.
+                np.multiply(row_scale[:, None], A1, out=A1)
+                np.multiply((1/row_scale)[:, None], A2, out=A2)
                 return A1, A2
 
             # Construct the equivalent IRK stage residual
