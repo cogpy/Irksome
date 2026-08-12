@@ -355,7 +355,7 @@ class ContinuousPetrovGalerkinTimeStepper(StageCoupledTimeStepper):
                 Fnew = replace(Fnew, {test: test_np})
                 return Fnew, bcnew
             elif trial_type != "value":
-                raise ValueError("Expecting a GalerkinCollocationScheme")
+                raise ValueError(f"Expecting a GalerkinCollocationScheme, got trial_type={trial_type!r}")
 
         if order is None:
             order = self.order
