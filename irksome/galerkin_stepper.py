@@ -10,7 +10,7 @@ from .ufl.deriv import TimeDerivative, expand_time_derivatives
 from .ufl.estimate_degrees import TimeDegreeEstimator, get_degree_mapping
 from .labeling import split_quadrature, as_form
 from .scheme import GalerkinCollocationScheme, create_time_quadrature, ufc_line
-from .tools import AI, IA, dot, fields_to_components, reshape, replace
+from .tools import AI, dot, fields_to_components, reshape, replace
 from .constant import vecconst
 from .discontinuous_galerkin_stepper import getElement as getTestElement
 from .integrated_lagrange import IntegratedLagrange
@@ -335,44 +335,27 @@ class ContinuousPetrovGalerkinTimeStepper(StageCoupledTimeStepper):
         aux_indices = aux_indices or self.aux_indices
 
         if tableau is not None:
-            # Galerkin collocation is equivalent to an IRK up to row scaling
-            row_scale = tableau.b
-
-            def scaledIA(A):
-                # For stage-value the splitting exposes row scaling
-                A1, A2 = IA(A)
-                # IA returns A2 = A (same object), so copy to avoid
-                # mutating the Butcher tableau in place on each call.
-                A2 = A2.copy()
-                # Use [:, None] to broadcast row_scale as a column vector,
-                # ensuring row-wise (not column-wise) scaling so A1 @ A2 == A.
-                np.multiply(row_scale[:, None], A1, out=A1)
-                np.multiply((1/row_scale)[:, None], A2, out=A2)
-                return A1, A2
-
-            # Construct the equivalent IRK stage residual
+            # Galerkin collocation is equivalent to an IRK up to row scaling,
+            # but only for deriv stages.  For value stages, getFormStage
+            # discretises Dt(u) as (U_i - u0)/dt whereas the Galerkin form
+            # uses the polynomial derivative du_h/dtau|_{c_i}, which differ
+            # for order > 1.  Fall through to getFormGalerkin for value stages.
             trial_type, test_type = basis_type
-            if trial_type == "value":
-                splitting = scaledIA
-                get_irk_form = getFormStage
-            elif trial_type == "deriv":
+            if trial_type == "deriv":
+                row_scale = tableau.b
                 splitting = AI
                 get_irk_form = getForm
-            else:
-                raise ValueError("Expecting a GalerkinCollocationScheme")
-
-            Fnew, bcnew = get_irk_form(F, tableau, self.t, self.dt, self.u0, stages,
-                                       bcs=bcs, splitting=splitting, aux_indices=aux_indices)
-
-            if splitting != scaledIA:
+                Fnew, bcnew = get_irk_form(F, tableau, self.t, self.dt, self.u0, stages,
+                                           bcs=bcs, splitting=splitting, aux_indices=aux_indices)
                 v0, = F.arguments()
                 test, = Fnew.arguments()
                 test_np = reshape(test, (-1, *v0.ufl_shape))
                 test_np = np.multiply(vecconst(row_scale).reshape(-1, *(1,)*len(v0.ufl_shape)), test_np)
                 test_np = test_np.reshape(test.ufl_shape)
                 Fnew = replace(Fnew, {test: test_np})
-
-            return Fnew, bcnew
+                return Fnew, bcnew
+            elif trial_type != "value":
+                raise ValueError(f"Expecting a GalerkinCollocationScheme, got trial_type={trial_type!r}")
 
         if order is None:
             order = self.order
