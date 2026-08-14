@@ -99,8 +99,11 @@ try:
         NystromAuxiliaryOperatorPC,
         RanaBase,
         RanaDU,
+        RanaDUScheme,
         RanaLD,
+        RanaLDScheme,
         IRKAuxiliaryOperatorPC,
+        as_butcher_tableau,
     )
     from .stepper import TimeStepper
 
@@ -116,6 +119,9 @@ try:
         "RanaLD",
         "IRKAuxiliaryOperatorPC",
         "TimeStepper",
+        "RanaDUScheme",
+        "RanaLDScheme",
+        "as_butcher_tableau",
     ]
 
 except ModuleNotFoundError:

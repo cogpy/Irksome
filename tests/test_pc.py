@@ -10,14 +10,10 @@ from irksome import (
     Dt, DiscontinuousGalerkinCollocationScheme,
     ContinuousPetrovGalerkinScheme, GalerkinCollocationScheme,
     IRKAuxiliaryOperatorPC, LobattoIIIC,
-    MeshConstant, RadauIIA, TimeStepper, TimeQuadratureLabel
+    MeshConstant, RadauIIA, RanaDUScheme, TimeStepper, TimeQuadratureLabel
 )
 from irksome.tools import AI, IA
 from irksome.labeling import as_form
-
-# FIXME should no longer be needed after https://github.com/firedrakeproject/firedrake/pull/5079
-from firedrake import parameters
-parameters["default_sub_matrix_type"] = "aij"
 
 # Tests that various PCs are actually getting the right answer.
 
@@ -81,17 +77,13 @@ def rd(scheme, **kwargs):
         }
     }
 
+    schemeDU = RanaDUScheme(scheme)
     ranaDU = {
-        "mat_type": "matfree",
         "ksp_type": "gmres",
         "ksp_converged_reason": None,
-        "pc_type": "python",
-        "pc_python_type": "irksome.RanaDU",
-        "aux": {
-            "pc_type": "fieldsplit",
-            "pc_fieldsplit_type": "multiplicative",
-            "fieldsplit": per_field,
-        }
+        "pc_type": "fieldsplit",
+        "pc_fieldsplit_type": "multiplicative",
+        "fieldsplit": per_field,
     }
 
     mypc_params = {
@@ -105,12 +97,13 @@ def rd(scheme, **kwargs):
         }
     }
 
-    params = [luparams, ranaLD, ranaDU, mypc_params]
+    params = [(luparams, None), (ranaLD, None), (ranaDU, schemeDU), (mypc_params, None)]
 
-    for solver_parameters in params:
+    for solver_parameters, scheme_Jp in params:
         F, u, bc = Fubc(V, t, uexact)
 
         stepper = TimeStepper(F, scheme, t, dt, u, bcs=bc,
+                              scheme_Jp=scheme_Jp,
                               solver_parameters=solver_parameters, **kwargs)
         stepper.advance()
         sols.append(u)
