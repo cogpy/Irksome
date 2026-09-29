@@ -8,7 +8,7 @@ from .scheme import GalerkinCollocationScheme, DiscontinuousGalerkinCollocationS
 from .discontinuous_galerkin_stepper import getElement
 from .galerkin_stepper import getTestElement
 
-from firedrake import AuxiliaryOperatorPC, derivative
+from firedrake import AuxiliaryOperatorPC, derivative, lhs
 from firedrake.dmhooks import get_appctx
 
 try:
@@ -69,6 +69,15 @@ def as_butcher_tableau(scheme):
     return CollocationButcherTableau(element, scheme.order)
 
 
+def _form_auxiliary_jacobian(stepper, F, w, trial, tableau=None):
+    """Assemble a stage Jacobian from a residual or bilinear semi-discrete form."""
+    is_bilinear = len(as_form(F).arguments()) == 2
+    stages = trial if is_bilinear else w
+    Fnew, bcnew = stepper.get_form_and_bcs(stages, tableau=tableau, F=F)
+    Jnew = lhs(Fnew) if is_bilinear else derivative(Fnew, w, du=trial)
+    return Jnew, bcnew
+
+
 def RanaLDScheme(scheme):
     """ButcherTableau for preconditioning with Atilde = LD where A=LDU."""
     butcher = as_butcher_tableau(scheme)
@@ -127,9 +136,7 @@ class IRKAuxiliaryOperatorPC(AuxiliaryOperatorPC):
         ctx = get_appctx(pc.getDM())
         w = ctx._x
 
-        Fnew, bcnew = stepper.get_form_and_bcs(w, tableau=butcher, F=F)
-        Jnew = derivative(Fnew, w, du=trial)
-        return Jnew, bcnew
+        return _form_auxiliary_jacobian(stepper, F, w, trial, tableau=butcher)
 
 
 class IRKAuxiliaryOperatorSNES(AuxiliaryOperatorSNES):
@@ -259,9 +266,7 @@ class NystromAuxiliaryOperatorPC(AuxiliaryOperatorPC):
         ctx = get_appctx(pc.getDM())
         w = ctx._x
 
-        Fnew, bcnew = stepper.get_form_and_bcs(w, tableau=tableau, F=F)
-        Jnew = derivative(Fnew, w, du=trial)
-        return Jnew, bcnew
+        return _form_auxiliary_jacobian(stepper, F, w, trial, tableau=tableau)
 
 
 class ClinesBase(NystromAuxiliaryOperatorPC):

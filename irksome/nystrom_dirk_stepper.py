@@ -104,7 +104,7 @@ class DIRKNystromTimeStepper:
                  bc_type=None,
                  backend: str = "firedrake",
                  **kwargs):
-        backend_cls = get_backend(backend)
+        self._backend = backend_cls = get_backend(backend)
         if not isinstance(tableau, NystromTableau):
             tableau = butcher_to_nystrom(tableau)
         assert tableau.is_diagonally_implicit
@@ -157,8 +157,8 @@ class DIRKNystromTimeStepper:
         k = self.kgac[0]
         self.bcnew = bcnew
 
-        stage_J = self.get_bilinear_form(J, self.ks)
-        stage_Jp = self.get_bilinear_form(Jp, self.ks)
+        stage_J = self.get_bilinear_form(J, k, tableau=tableau)
+        stage_Jp = self.get_bilinear_form(Jp, k, tableau=tableau)
 
         appctx_irksome = {"stepper": self}
         if appctx is None:
